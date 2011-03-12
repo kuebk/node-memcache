@@ -1,0 +1,21 @@
+import Options
+import platform
+
+def set_options(opt):
+  pass
+  #opt.tool_options("compiler_cc")
+
+def configure(conf):
+  print "--- libhashkit ---"
+  #conf.check_tool("compiler_cc")
+
+def build(bld):
+  hashkit = bld.new_task_gen("cc")
+  hashkit.source = bld.path.ant_glob('*.c')
+  hashkit.target = 'hashkit'
+  hashkit.name = 'hashkit'
+  hashkit.includes = '..'
+  hashkit.install_path = None
+  hashkit.ccflags ="-fPIC"
+  if bld.env["USE_DEBUG"]:
+    hashkit.clone("debug")

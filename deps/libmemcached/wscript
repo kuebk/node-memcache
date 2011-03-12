@@ -1,0 +1,30 @@
+import Options
+import platform
+
+supported_archs = ('arm', 'ia32', 'x64')
+
+def canonical_cpu_type(arch):
+  m = {'x86': 'ia32', 'i386':'ia32', 'x86_64':'x64', 'amd64':'x64'}
+  if arch in m: arch = m[arch]
+  if not arch in supported_archs:
+    raise Exception("supported architectures are "+', '.join(supported_archs)+\
+                    " but NOT '" + arch + "'.")
+  return arch
+
+def set_options(opt):
+  pass
+
+def configure(conf):
+  conf.env.append_value('CCFLAGS', ['-DHAVE_CONFIG_H=1', '-std=gnu99'])
+
+def build(bld):
+  bld.env['DEST_CPU'] = canonical_cpu_type(bld.env['DEST_CPU'])
+  lib = bld.new_task_gen("cc")
+  lib.source = bld.path.ant_glob('*.c')
+  lib.target = 'memcached'
+  lib.name = 'memcached'
+  lib.includes = '.. ./' + bld.env['DEST_OS'] + '-' + bld.env['DEST_CPU']
+  lib.install_path = None
+  lib.ccflags = "-fPIC"
+  if bld.env["USE_DEBUG"]:
+    lib.clone("debug")
