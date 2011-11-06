@@ -157,10 +157,10 @@ class Connection : EventEmitter {
     get_req->c->Emit(ready_symbol, 0, NULL);
     get_req->cb.Dispose();
 
+    get_req->c->Unref();
+
     free(get_req->content);
     free(get_req);
-
-    get_req->c->Unref();
 
     return 0;
   }
@@ -273,11 +273,11 @@ class Connection : EventEmitter {
     set_req->c->Emit(ready_symbol, 0, NULL);
     set_req->cb.Dispose();
 
+    set_req->c->Unref();
+
     free(set_req->content);
     free(set_req->key);
     free(set_req);
-
-    set_req->c->Unref();
 
     return 0;
   }
@@ -399,10 +399,10 @@ class Connection : EventEmitter {
     incr_req->c->Emit(ready_symbol, 0, NULL);
     incr_req->cb.Dispose();
 
+    incr_req->c->Unref();
+
     free(incr_req->key);
     free(incr_req);
-
-    incr_req->c->Unref();
 
     return 0;
   }
@@ -565,10 +565,10 @@ class Connection : EventEmitter {
     remove_req->c->Emit(ready_symbol, 0, NULL);
     remove_req->cb.Dispose();
 
+    remove_req->c->Unref();
+
     free(remove_req->key);
     free(remove_req);
-
-    remove_req->c->Unref();
 
     return 0;
   }
@@ -650,9 +650,9 @@ class Connection : EventEmitter {
     flush_req->c->Emit(ready_symbol, 0, NULL);
     flush_req->cb.Dispose();
 
-    free(flush_req);
-
     flush_req->c->Unref();
+
+    free(flush_req);
 
     return 0;
   }
